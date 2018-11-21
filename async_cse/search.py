@@ -4,6 +4,8 @@ from urllib.parse import quote
 class NoResults(Exception):
     pass
 
+class InvalidKey(Exception):
+    pass
 
 class Result:
     """
@@ -27,7 +29,7 @@ class Result:
         return results
 
 class Search:
-    """Client for searching Google."""
+    """Client for custom searches."""
 
     def __init__(self, api_key, engine_id="015786823554162166929:mywctwj8es4", safesearch="active"):
         self.api_key = api_key # API key for the CSE API 
@@ -41,6 +43,8 @@ class Search:
         url = self.search_url.format(self.api_key, self.engine_id, quote(query), self.safesearch)
         async with self.session.get(url) as r:
             j = await r.json()
+            if j.get("error"):
+                raise InvalidKey("The API key you provided was invalid.")
             if not j.get("items"):
                 raise NoResults("Your query {} returned no results.".format(query))
         return Result.from_raw(j)

@@ -8,8 +8,8 @@ import async_cse
 
 s = async_cse.search.Search("Your API Key") # create the Search client (uses Google by default!)
 r = await s.search("Python") # returns a list of async_cse.search.Result objects
-print(r.title, r.description) # Title text
-print(r.url) # URL of the search result
+print(r[0].title, r[0].description) # Title text
+print(r[0].url) # URL of the search result
 ```
 To use Search objects with a custom search engine, provide the ID of the search engine.
 ```python

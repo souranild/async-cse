@@ -1,3 +1,5 @@
 dist/
 build/
 async_cse.egg-info
+__pycache__
+*.pyc
