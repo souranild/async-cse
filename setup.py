@@ -1,11 +1,25 @@
-from setuptools import setup
+import setuptools
 
-setup(name='async_cse',
-      version='0.1',
+with open("README.md", "r") as f:
+    long_description = f.read()
+
+setuptools.setup(name='async_cse',
+      version='0.0.1',
       description='API wrapper for the Google Custom Search JSON API. https://developers.google.com/custom-search/v1/overview',
-      url='https://github.com/crrapi/async_cse',
+      url='https://github.com/crrapi/async-cse',
       author='Chris Rrapi',
       author_email='crrapi@gmail.com',
+      long_description=long_description,
+      long_description_content_type="text/markdown",
       license='MIT',
-      packages=['async_cse'],
-      zip_safe=False)
+      packages=setuptools.find_packages(),
+      install_requires=['aiohttp'],
+      classifiers=[
+            "Programming Language :: Python :: 3.5",
+            "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: OS Independent",
+            "Development Status :: 3"
+      ]
+)
