@@ -1,9 +1,6 @@
 dist/
 build/
 async_cse.egg-info
-<<<<<<< HEAD
 __pycache__
 *.pyc
-=======
 .vscode
->>>>>>> 641f51d8303301155339e271db42e76791163c5f
