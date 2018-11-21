@@ -1,3 +1,4 @@
 dist/
 build/
 async_cse.egg-info
+.vscode
