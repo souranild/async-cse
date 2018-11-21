@@ -1,5 +1,7 @@
 # async-cse
 Asyncio API wrapper for the [Google Custom Search JSON API](https://developers.google.com/custom-search/v1/overview).
+# Installation
+`pip3 install async_cse`
 # Usage
 ```python
 import async_cse
