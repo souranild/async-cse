@@ -30,8 +30,8 @@ class Result:
 class Search:
     """Client for searching Google."""
 
-    def __init__(self, api_key: str, engine_id: str = None, safesearch: bool = None):
-        self.api_key = api_key # API key for the CSE API
+    def __init__(self, api_key: str, *, engine_id: str = None, safesearch: bool = None):
+        self.api_key = api_key # API key for the CSE API 
         self.engine_id = engine_id or "015786823554162166929:mywctwj8es4" # CSE for searching Google
         self.safesearch = safesearch or "active" # can be set to 'off' or 'active' by default
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests

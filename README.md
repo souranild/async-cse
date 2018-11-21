@@ -13,7 +13,7 @@ print(r.url) # URL of the search result
 ```
 To use Search objects with a custom search engine, provide the ID of the search engine.
 ```python
-async_cse.search.Search("Your API Key", "015786823554162166929:mywctwj8es4")
+async_cse.search.Search("Your API Key", engine_id="015786823554162166929:mywctwj8es4")
 ```
 SafeSearch can also be turned off by setting `safesearch="off"`.
 # Getting an API key
