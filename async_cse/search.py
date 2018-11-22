@@ -31,16 +31,17 @@ class Result:
 class Search:
     """Client for custom searches."""
 
-    def __init__(self, api_key, engine_id="015786823554162166929:mywctwj8es4", safesearch="active"):
+    def __init__(self, api_key: str, engine_id: str="015786823554162166929:mywctwj8es4"):
         self.api_key = api_key # API key for the CSE API 
-        self.safesearch = safesearch
         self.engine_id = engine_id
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
-        self.session = aiohttp.ClientSession() # Session for requests
+        self.session = None
 
-    async def search(self, query: str):
+    async def search(self, query: str, safesearch="active"):
         """Searches Google for a given query."""
-        url = self.search_url.format(self.api_key, self.engine_id, quote(query), self.safesearch)
+        if not self.session:
+            self.session = aiohttp.ClientSession() # Session for requests
+        url = self.search_url.format(self.api_key, self.engine_id, quote(query), safesearch)
         async with self.session.get(url) as r:
             j = await r.json()
             if j.get("error"):
