@@ -13,10 +13,11 @@ class Result:
     You do not make these on your own, you usually get them from async_cse.Search.search.
     """
     
-    def __init__(self, title, description, url):
+    def __init__(self, title, description, url, image_url):
         self.title = title
         self.description = description
         self.url = url
+        self.image_url = image_url
 
     @classmethod
     def from_raw(cls, data):
@@ -25,7 +26,8 @@ class Result:
             title = item["title"]
             desc = item["snippet"]
             url = item["link"]
-            results.append(cls(title, desc, url))
+            image_url = item["pagemap"]["cse_image"][0]["src"]
+            results.append(cls(title, desc, url, image_url))
         return results
 
 class Search:
@@ -55,4 +57,5 @@ class Search:
                 raise APIError(e)
             if not j.get("items"):
                 raise NoResults("Your query {} returned no results.".format(query))
+
         return Result.from_raw(j)
