@@ -4,7 +4,7 @@ from urllib.parse import quote
 class NoResults(Exception):
     pass
 
-class InvalidKey(Exception):
+class APIError(Exception):
     pass
 
 class Result:
@@ -37,15 +37,22 @@ class Search:
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
         self.session = None
 
-    async def search(self, query: str, safesearch="active"):
+    async def search(self, query: str, safesearch=True):
         """Searches Google for a given query."""
         if not self.session:
             self.session = aiohttp.ClientSession() # Session for requests
+        # ---- compatibility ---- #
+        if safesearch == True:
+            safesearch = "active"
+        if safesearch == False:
+            safesearch = "off"
+        # ----------------------- #
         url = self.search_url.format(self.api_key, self.engine_id, quote(query), safesearch)
         async with self.session.get(url) as r:
             j = await r.json()
-            if j.get("error"):
-                raise InvalidKey("The API key you provided was invalid.")
+            e = j.get("error")
+            if e:
+                raise APIError(e)
             if not j.get("items"):
                 raise NoResults("Your query {} returned no results.".format(query))
         return Result.from_raw(j)
