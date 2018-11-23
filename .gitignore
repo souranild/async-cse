@@ -4,3 +4,4 @@ async_cse.egg-info
 __pycache__
 *.pyc
 .vscode
+test.py

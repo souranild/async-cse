@@ -1,5 +1,6 @@
 import aiohttp
 from urllib.parse import quote
+import asyncio
 
 class NoResults(Exception):
     pass
@@ -26,7 +27,11 @@ class Result:
             title = item["title"]
             desc = item["snippet"]
             url = item["link"]
-            image_url = item["pagemap"]["cse_image"][0]["src"]
+            i = item["pagemap"].get("cse_image")
+            if not i:
+                image_url = None
+            else:
+                image_url = i[0]["src"]
             results.append(cls(title, desc, url, image_url))
         return results
 
@@ -38,6 +43,9 @@ class Search:
         self.engine_id = engine_id
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
         self.session = None
+
+    def __del__(self):
+        asyncio.get_event_loop().run_until_complete(self.session.close())
 
     async def search(self, query: str, safesearch=True):
         """Searches Google for a given query."""

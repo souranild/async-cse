@@ -11,7 +11,7 @@ r = await s.search("Python", safesearch=True) # returns a list of async_cse.sear
 
 first_result = r[0]
 print(first_result.title, first_result.description) # Title text and description
-print(first_result.url) # URL of the search result
+print(first_result.url, first_result.image_url) # URL and image URL of the search result
 ```
 To use Search objects with a custom search engine, provide the ID of the search engine.
 ```python
