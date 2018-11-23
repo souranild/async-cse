@@ -27,11 +27,15 @@ class Result:
             title = item["title"]
             desc = item["snippet"]
             url = item["link"]
-            i = item["pagemap"].get("cse_image")
+            i = item.get("pagemap")
             if not i:
                 image_url = None
             else:
-                image_url = i[0]["src"]
+                img = i.get("cse_image")
+                if not i:
+                    image_url = None
+                else:
+                    image_url = img[0]["src"]
             results.append(cls(title, desc, url, image_url))
         return results
 
