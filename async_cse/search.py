@@ -35,7 +35,10 @@ class Result:
                 if not i:
                     image_url = None
                 else:
-                    image_url = img[0]["src"]
+                    try:
+                        image_url = img[0]["src"]
+                    except TypeError:
+                        return None
             results.append(cls(title, desc, url, image_url))
         return results
 
