@@ -38,7 +38,7 @@ class Result:
                     try:
                         image_url = img[0]["src"]
                     except TypeError:
-                        return None
+                        image_url = None
             results.append(cls(title, desc, url, image_url))
         return results
 
@@ -61,7 +61,7 @@ class Search:
         # ---- compatibility ---- #
         if safesearch == True:
             safesearch = "active"
-        if safesearch == False:
+        elif safesearch == False:
             safesearch = "off"
         # ----------------------- #
         url = self.search_url.format(self.api_key, self.engine_id, quote(query), safesearch)
