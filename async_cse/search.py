@@ -1,10 +1,20 @@
 import aiohttp
 from urllib.parse import quote
 
-class NoResults(Exception):
+class CSEBaseException(Exception):
+    """Base class for all async_cse Exceptions."""
     pass
 
-class APIError(Exception):
+class NoResults(CSEBaseException):
+    """Query yielded no results."""
+    pass
+
+class APIError(CSEBaseException):
+    """Internal API error."""
+    pass
+
+class NoMoreRequests(CSEBaseException):
+    """Out of requests for today."""
     pass
 
 class Result:
