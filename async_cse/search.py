@@ -50,9 +50,10 @@ class Search:
         self.engine_id = engine_id
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
         self.session = None
-
-    def __del__(self):
-        asyncio.get_event_loop().run_until_complete(self.session.close())
+    
+    async def close(self):
+        """Properly close the client."""
+        await self.session.close()
 
     async def search(self, query: str, safesearch=True):
         """Searches Google for a given query."""
