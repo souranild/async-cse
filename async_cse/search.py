@@ -1,6 +1,5 @@
 import aiohttp
 from urllib.parse import quote
-import asyncio
 
 class NoResults(Exception):
     pass
@@ -19,6 +18,12 @@ class Result:
         self.description = description
         self.url = url
         self.image_url = image_url
+
+    def __str__(self):
+        return "<async_cse.search.Result object, url: {}, image_url: {}>".format(self.url, self.image_url)
+
+    def __repr__(self):
+        return "<async_cse.search.Result object, url: {}, image_url: {}>".format(self.url, self.image_url)
 
     @classmethod
     def from_raw(cls, data):
@@ -51,6 +56,12 @@ class Search:
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
         self.session = None
     
+    def __repr__(self):
+        return "<async_cse.search.Search object, engine_id: {}>".format(self.engine_id)
+
+    def __str__(self):
+        return "<async_cse.search.Search object, engine_id: {}>".format(self.engine_id)
+
     async def close(self):
         """Properly close the client."""
         await self.session.close()
