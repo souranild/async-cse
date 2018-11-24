@@ -50,11 +50,11 @@ class Result:
 class Search:
     """Client for custom searches."""
 
-    def __init__(self, api_key: str, engine_id: str="015786823554162166929:mywctwj8es4"):
+    def __init__(self, api_key: str, engine_id: str="015786823554162166929:mywctwj8es4", session: aiohttp.ClientSession=None):
         self.api_key = api_key # API key for the CSE API 
         self.engine_id = engine_id
         self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}" # URL for requests
-        self.session = None
+        self.session = session or None
     
     def __repr__(self):
         return "<async_cse.search.Search object, engine_id: {}>".format(self.engine_id)
