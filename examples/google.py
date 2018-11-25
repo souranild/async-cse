@@ -11,7 +11,7 @@ class Google:
 
     @commands.command(name="google", aliases=['g'])
     async def google_(self, ctx, *, query: str):
-        """Googles stuff."""
+        """Searches things on Google."""
         try:
             r = (await self.google.search(query))[0]
         except async_cse.NoResults:
@@ -23,7 +23,7 @@ class Google:
             url = ctx.author.avatar_url_as(static_format="png", size=128)
             e.set_footer(text="Requested by {}".format(ctx.author), icon_url=url)
             e.set_image(url=r.image_url)
-            await ctx.send(e)
+            await ctx.send(embed=e)
 
 def setup(bot):
     bot.add_cog(Google(bot))
