@@ -91,7 +91,10 @@ class Search:
             j = await r.json()
             e = j.get("error")
             if e:
-                raise APIError(e)
+                if e["errors"][0]["domain"] == "usageLimits":
+                    raise NoMoreRequests("[100 Request Limit] You have to wait a day before you can make more requests.")
+                else:
+                    raise APIError(", ".join([er["message"] for er in e["errors"]]))
             if not j.get("items"):
                 raise NoResults("Your query {} returned no results.".format(query))
 
