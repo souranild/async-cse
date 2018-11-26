@@ -17,6 +17,8 @@ class NoMoreRequests(CSEBaseException):
     """Out of requests for today."""
     pass
 
+GOOGLE_FAVICON = "http://google.com/favicon.ico"
+
 class Result:
     """
     Represents a result from a search query.
@@ -44,16 +46,16 @@ class Result:
             url = item["link"]
             i = item.get("pagemap")
             if not i:
-                image_url = None
+                image_url = GOOGLE_FAVICON
             else:
                 img = i.get("cse_image")
                 if not i:
-                    image_url = None
+                    image_url = GOOGLE_FAVICON
                 else:
                     try:
                         image_url = img[0]["src"]
                     except TypeError:
-                        image_url = None
+                        image_url = GOOGLE_FAVICON
             results.append(cls(title, desc, url, image_url))
         return results
 
