@@ -1,8 +1,12 @@
 import async_cse
 import asyncio
 
+# ----
+# Credit to https://github.com/XuaTheGrate
+# ----
+
 async def main():
-    google = async_cse.Search("AIzaSyCyBo7wlv-6VFxcM4WxCuBGK6V2kUmKfWY")
+    google = async_cse.Search("Your API key")
     try:
         results = await google.search(input("Type something to Google it! "))
     except async_cse.NoResults:

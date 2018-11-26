@@ -1,4 +1,5 @@
 # Example Google cog for discord.py@rewrite bots.
+# Made by chr1s#7185
 import discord
 from discord.ext import commands
 import async_cse
