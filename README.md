@@ -6,10 +6,10 @@ Asyncio API wrapper for the [Google Custom Search JSON API](https://developers.g
 ```python
 import async_cse
 
-search = async_cse.Search("Your API Key") # create the Search client (uses Google by default!)
-results = await s.search("Python", safesearch=False) # returns a list of async_cse.Result objects
+client = async_cse.Search("Your API Key") # create the Search client (uses Google by default!)
+results = await client.search("Python", safesearch=False) # returns a list of async_cse.Result objects
 print(results[0].title, results[0].description, results[0].url, results[0].image_url) # Title, snippet, URL, and Image URL
-await search.close() # Run this when cleaning up.
+await client.close() # Run this when cleaning up.
 ```
 To use Search objects with a custom search engine, provide the ID of the search engine.
 ```python
