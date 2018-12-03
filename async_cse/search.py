@@ -26,7 +26,7 @@ class NoMoreRequests(CSEBaseException):
     pass
 
 
-GOOGLE_FAVICON = "http://google.com/favicon.ico"
+GOOGLE_FAVICON = "https://image.flaticon.com/teams/slug/google.jpg"
 
 
 class Result:
