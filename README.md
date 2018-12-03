@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/crrapi/async-cse.png?branch=master)](https://travis-ci.org/crrapi/async-cse)
+<a href="https://github.com/crrapi/async-cse"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 # async-cse
 Asyncio API wrapper for the [Google Custom Search JSON API](https://developers.google.com/custom-search/v1/overview).
 # Installation
