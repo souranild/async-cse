@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/crrapi/async-cse.png?branch=master)](https://travis-ci.org/crrapi/async-cse)
 # async-cse
 Asyncio API wrapper for the [Google Custom Search JSON API](https://developers.google.com/custom-search/v1/overview).
 # Installation
