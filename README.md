@@ -3,8 +3,11 @@
 [![PyPI version](https://badge.fury.io/py/async-cse.svg)](https://badge.fury.io/py/async-cse)
 [![Issues](https://img.shields.io/github/issues/crrapi/async-cse.svg?colorB=00FFFF)](https://img.shields.io/github/issues/crrapi/async-cse.svg?colorB=00FFFF)
 [![CircleCI](https://circleci.com/gh/crrapi/async-cse.svg?style=svg)](https://circleci.com/gh/crrapi/async-cse)
-[![Coverage Status](https://coveralls.io/repos/github/crrapi/async-cse/badge.svg?branch=master)](https://coveralls.io/github/crrapi/async-cse?branch=master)
 [![LICENSE](https://img.shields.io/pypi/l/async-cse.svg)](https://img.shields.io/pypi/l/async-cse.svg)
+[![Chat](https://img.shields.io/discord/516199479909810176.svg)](https://img.shields.io/discord/516199479909810176.svg)
+[![Downloads](https://img.shields.io/pypi/dd/async-cse.svg)](https://img.shields.io/pypi/dd/async-cse.svg)
+[![Python](https://img.shields.io/pypi/pyversions/async-cse.svg)](https://img.shields.io/pypi/pyversions/async-cse.svg)
+[![impl](https://img.shields.io/pypi/implementation/async-cse.svg)](https://img.shields.io/pypi/implementation/async-cse.svg)
 # async-cse
 Asyncio API wrapper for the [Google Custom Search JSON API](https://developers.google.com/custom-search/v1/overview).
 # Installation
