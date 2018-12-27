@@ -1,29 +1,45 @@
-import aiohttp
+"""
+MIT License
+
+Copyright (c) 2018 Chris Rrapi
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
 from urllib.parse import quote
+
+import aiohttp
 
 
 class CSEBaseException(Exception):
     """Base class for all async_cse Exceptions."""
 
-    pass
-
 
 class NoResults(CSEBaseException):
     """Query yielded no results."""
-
-    pass
 
 
 class APIError(CSEBaseException):
     """Internal API error."""
 
-    pass
-
 
 class NoMoreRequests(CSEBaseException):
     """Out of requests for today."""
-
-    pass
 
 
 GOOGLE_FAVICON = "https://image.flaticon.com/teams/slug/google.jpg"
@@ -53,6 +69,7 @@ class Result:
 
     @classmethod
     def from_raw(cls, data):
+        """Converts a dict to Result objects"""
         results = list()
         for item in data["items"]:
             title = item["title"]
@@ -78,25 +95,23 @@ class Search:
     """Client for custom searches."""
 
     def __init__(
-        self,
-        api_key: str,
-        engine_id: str = "015786823554162166929:mywctwj8es4",
-        session: aiohttp.ClientSession = None,
+            self,
+            api_key: str,
+            engine_id: str = "015786823554162166929:mywctwj8es4",
+            session: aiohttp.ClientSession = None,
     ):
         self.api_key = api_key  # API key for the CSE API
         self.engine_id = engine_id
-        self.search_url = "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}"  # URL for requests
+        self.search_url = (
+            "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}"
+        )  # URL for requests
         self.session = session or None
 
     def __repr__(self):
-        return "<async_cse.search.Search object, engine_id: {}>".format(
-            self.engine_id
-        )
+        return "<async_cse.search.Search object, engine_id: {}>".format(self.engine_id)
 
     def __str__(self):
-        return "<async_cse.search.Search object, engine_id: {}>".format(
-            self.engine_id
-        )
+        return "<async_cse.search.Search object, engine_id: {}>".format(self.engine_id)
 
     async def close(self):
         """Properly close the client."""
@@ -105,45 +120,27 @@ class Search:
     async def search(self, query: str, safesearch=True):
         """Searches Google for a given query."""
         if not self.session:
-            self.session = (
-                aiohttp.ClientSession()
-            )  # Session for requests
+            self.session = aiohttp.ClientSession()  # Session for requests
         # ---- compatibility ---- #
-        if safesearch == True:
+        if safesearch:
             safesearch = "active"
-        elif safesearch == False:
+        elif not safesearch:
             safesearch = "off"
         # ----------------------- #
         url = self.search_url.format(
-            self.api_key,
-            self.engine_id,
-            quote(query),
-            safesearch,
+            self.api_key, self.engine_id, quote(query), safesearch
         )
-        async with self.session.get(url) as r:
-            j = await r.json()
-            e = j.get("error")
-            if e:
-                if (
-                    e["errors"][0]["domain"]
-                    == "usageLimits"
-                ):
+        async with self.session.get(url) as resp:
+            j = await resp.json()
+            error = j.get("error")
+            if error:
+                if error["errors"][0]["domain"] == "usageLimits":
                     raise NoMoreRequests(
-                        "[100 Request Limit] You have to wait a day before you can make more requests."
+                        "[100 Request Limit]\
+                        You have to wait a day before you can make more requests."
                     )
                 else:
-                    raise APIError(
-                        ", ".join(
-                            [
-                                er["message"]
-                                for er in e["errors"]
-                            ]
-                        )
-                    )
+                    raise APIError(", ".join([error["message"] for err in error["errors"]]))
             if not j.get("items"):
-                raise NoResults(
-                    "Your query {} returned no results.".format(
-                        query
-                    )
-                )
+                raise NoResults("Your query {} returned no results.".format(query))
         return Result.from_raw(j)
