@@ -7,7 +7,7 @@ client = async_cse.Search(API_KEY)
 
 
 async def main():
-    result = (await client.search("Google"))[0]
+    result = (await client.search("deepfried meme", image_search=True))[0]
     await client.close()
     print(result.title)
     print(result.description)

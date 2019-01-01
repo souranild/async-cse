@@ -26,6 +26,18 @@ print(results[0].title, results[0].description, results[0].url, results[0].image
 
 await client.close() # Run this when cleaning up.
 ```
+# Getting image results
+```python
+import async_cse
+
+client = async_cse.Search("Your API Key") # create the Search client (uses Google by default!)
+
+results = await client.search("Python", safesearch=False, image_search=True) # returns a list of async_cse.Result objects
+
+print(results[0].title, results[0].description, results[0].url, results[0].image_url) # Title, snippet, URL, and Image URL
+
+await client.close() # Run this when cleaning up.
+```
 To use Search objects with a custom search engine, provide the ID of the search engine.
 ```python
 async_cse.Search("Your API Key", engine_id="015786823554162166929:mywctwj8es4")

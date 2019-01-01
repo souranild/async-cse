@@ -68,25 +68,29 @@ class Result:
         )
 
     @classmethod
-    def from_raw(cls, data):
+    def from_raw(cls, data, img):
         """Converts a dict to Result objects"""
         results = list()
         for item in data["items"]:
             title = item["title"]
             desc = item["snippet"]
-            url = item["link"]
-            i = item.get("pagemap")
-            if not i:
-                image_url = GOOGLE_FAVICON
+            if img:
+                image_url = item["link"]
+                url = item["image"]["contextLink"]
             else:
-                img = i.get("cse_image")
+                url = item["link"]
+                i = item.get("pagemap")
                 if not i:
                     image_url = GOOGLE_FAVICON
                 else:
-                    try:
-                        image_url = img[0]["src"]
-                    except TypeError:
+                    img = i.get("cse_image")
+                    if not i:
                         image_url = GOOGLE_FAVICON
+                    else:
+                        try:
+                            image_url = img[0]["src"]
+                        except TypeError:
+                            image_url = GOOGLE_FAVICON
             results.append(cls(title, desc, url, image_url))
         return results
 
@@ -95,13 +99,15 @@ class Search:
     """Client for custom searches."""
 
     def __init__(
-            self,
-            api_key: str,
-            engine_id: str = "015786823554162166929:mywctwj8es4",
-            session: aiohttp.ClientSession = None,
+        self,
+        api_key: str,
+        engine_id: str = "015786823554162166929:mywctwj8es4",
+        image_engine_id: str = "015786823554162166929:szgrbbrrox0",
+        session: aiohttp.ClientSession = None,
     ):
         self.api_key = api_key  # API key for the CSE API
         self.engine_id = engine_id
+        self.image_engine_id = image_engine_id
         self.search_url = (
             "https://www.googleapis.com/customsearch/v1?key={}&cx={}&q={}&safe={}"
         )  # URL for requests
@@ -117,19 +123,26 @@ class Search:
         """Properly close the client."""
         await self.session.close()
 
-    async def search(self, query: str, safesearch=True):
+    async def search(self, query: str, *, safesearch=True, image_search=False):
         """Searches Google for a given query."""
         if not self.session:
             self.session = aiohttp.ClientSession()  # Session for requests
         # ---- compatibility ---- #
         if safesearch:
             safesearch = "active"
-        elif not safesearch:
+        else:
             safesearch = "off"
+        if image_search:
+            image_search = "image"
         # ----------------------- #
         url = self.search_url.format(
-            self.api_key, self.engine_id, quote(query), safesearch
+            self.api_key,
+            self.image_engine_id if image_search else self.engine_id,
+            quote(query),
+            safesearch,
         )
+        if image_search:
+            url += "&searchType=image"
         async with self.session.get(url) as resp:
             j = await resp.json()
             error = j.get("error")
@@ -140,7 +153,9 @@ class Search:
                         You have to wait a day before you can make more requests."
                     )
                 else:
-                    raise APIError(", ".join([error["message"] for err in error["errors"]]))
+                    raise APIError(
+                        ", ".join([error["message"] for err in error["errors"]])
+                    )
             if not j.get("items"):
                 raise NoResults("Your query {} returned no results.".format(query))
-        return Result.from_raw(j)
+        return Result.from_raw(j, img=image_search)

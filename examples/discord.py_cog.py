@@ -26,6 +26,7 @@ import discord
 from discord.ext import commands
 import async_cse
 
+
 class Google:
     """Commands for searching things on Google."""
 
