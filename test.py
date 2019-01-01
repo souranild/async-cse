@@ -3,7 +3,7 @@ import asyncio
 import os
 
 API_KEY = os.environ.get("API_KEY")
-client = async_cse.Search("AIzaSyAIZGwJCVO2gZTbssgiseKcG_FrKJT-Mjc")
+client = async_cse.Search(API_KEY)
 
 
 async def main():
