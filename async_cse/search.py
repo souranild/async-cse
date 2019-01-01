@@ -76,7 +76,10 @@ class Result:
             desc = item["snippet"]
             if img:
                 image_url = item["link"]
-                url = item["image"]["contextLink"]
+                try:
+                    url = item["image"]["contextLink"]
+                except KeyError:
+                    url = image_url
             else:
                 url = item["link"]
                 i = item.get("pagemap")
