@@ -92,6 +92,8 @@ class Result:
                     else:
                         try:
                             image_url = img[0]["src"]
+                            if image_url.startswith("x-raw-image"):
+                                image_url = i["cse_thumbnail"][0]["src"]
                         except TypeError:
                             image_url = GOOGLE_FAVICON
             results.append(cls(title, desc, url, image_url))
