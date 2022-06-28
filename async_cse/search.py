@@ -150,7 +150,7 @@ class Search:
             j = await resp.json()
             error = j.get("error")
             if error:
-                if error["errors"][0]["domain"] == "usageLimits":
+                if "Quota exceeded" in error["errors"][0]["message"]:
                     raise NoMoreRequests(
                         "[100 Request Limit]\
                         You have to wait a day before you can make more requests."
